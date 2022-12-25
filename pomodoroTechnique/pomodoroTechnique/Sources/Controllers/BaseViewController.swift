@@ -10,45 +10,67 @@ import UIKit
 class BaseViewController: UIViewController {
     
     // MARK: - Helpers
-    
-    private var workLap: CGFloat = 25
-    private var relaxLap: CGFloat = 5
+
     private var progress: CGFloat = 0
+    private var visibleProgress: String {
+        let sec = Int(5 * multiplier - progress)
+        let msec = 100 - Int(progress.truncatingRemainder(dividingBy: 1) * 100)
+        return String(format: "%02i:%02i", sec, msec)
+    }
     
     private var timer = Timer()
     private var isStarted: Bool = false
     private var isWorkingTime: Bool = true
-    private var isRelaxingTime: Bool {
-        !isWorkingTime
-    }
     
+    private var multiplier: CGFloat {
+        isWorkingTime ? 5: 1
+    }
     private var angle: CGFloat {
-        CGFloat.pi * progress
+        CGFloat.pi * progress / multiplier
     }
     private var radius: CGFloat {
         (circularProgressRect.frame.height > circularProgressRect.frame.width ? circularProgressRect.frame.width: circularProgressRect.frame.height) / 2
     }
     
+    private var accentUIColor: UIColor {
+        isWorkingTime ? UIColor.red: UIColor.green
+    }
+    private var accentCGColor: CGColor {
+        accentUIColor.cgColor
+    }
+        
     // MARK: - UI
     
     private var timerLabel: UILabel = {
-       let label = UILabel()
-        label.text = "0"
-        label.textColor = .black
+        let label = UILabel(frame: CGRect(x: 0, y: 0,
+                                          width: 220,
+                                          height: 80))
+        label.numberOfLines = 1
+        label.font = .monospacedDigitSystemFont(ofSize: 78, weight: .light)
         label.textAlignment = .center
+        label.text = "25:00"
         return label
     }()
+    
     private var startStopButton: UIButton = {
-        let button = UIButton()
+        let button = UIButton(frame: CGRect(x: 0, y: 0,
+                                            width: 160,
+                                            height: 160))
         button.addTarget(self, action: #selector(tapped), for: .touchUpInside)
         return button
     }()
     
     private var circularProgressRect: UIView = {
         UIView(frame: CGRect(x: 0, y: 0,
-                             width: 300,
-                             height: 300))
+                             width: 320,
+                             height: 320))
     }()
+    
+    private var controlImage: UIImage? {
+        let image = UIImage(named: isStarted ? "pause": "play")
+        return image?.withTintColor(accentUIColor)
+        
+    }
     
     private var circleLayer = CAShapeLayer()
     private var smallDotLayer = CAShapeLayer()
@@ -63,7 +85,7 @@ class BaseViewController: UIViewController {
         setupView()
         setupHierarchy()
         setupLayout()
-        
+        updateUI()
     }
     
     // MARK: - Setup view
@@ -80,22 +102,20 @@ class BaseViewController: UIViewController {
                                         clockwise: true)
         circleLayer.path = circularPath.cgPath
         circleLayer.fillColor = UIColor.clear.cgColor
-        circleLayer.strokeColor = UIColor.purple.cgColor
-        circleLayer.lineWidth = 8
+        circleLayer.lineWidth = 6
                 
         dotPath.move(to: circularPath.currentPoint)
         dotPath.addLine(to: circularPath.currentPoint)
         
-    
         bigDotLayer.path = dotPath.cgPath
-        bigDotLayer.strokeColor = UIColor.purple.cgColor
+        bigDotLayer.strokeColor = UIColor.clear.cgColor
         bigDotLayer.lineCap = .round
-        bigDotLayer.lineWidth = 32
+        bigDotLayer.lineWidth = 38
         
         smallDotLayer.path = dotPath.cgPath
-        smallDotLayer.strokeColor = UIColor.white.cgColor
+        smallDotLayer.strokeColor = UIColor.clear.cgColor
         smallDotLayer.lineCap = .round
-        smallDotLayer.lineWidth = 24
+        smallDotLayer.lineWidth = 32
         
         circularProgressRect.layer.addSublayer(circleLayer)
         circleLayer.addSublayer(bigDotLayer)
@@ -106,26 +126,22 @@ class BaseViewController: UIViewController {
     
     private func setupHierarchy() {
         view.addSubview(circularProgressRect)
-        view.addSubview(startStopButton)
-        startStopButton.frame = CGRect(x: 0, y: 500, width: 100, height: 50)
-        startStopButton.backgroundColor = .purple
-        startStopButton.setTitle("ON/OFF", for: .normal)
-        startStopButton.setTitleColor(.white, for: .normal)
-        startStopButton.layer.cornerRadius = 25
-        startStopButton.center.x = view.center.x
         createCircularProressBar(onView: circularProgressRect)
-        timerLabel.frame = CGRect(x: 0, y: 0, width: 100, height: 50)
-        timerLabel.center = view.center
-        timerLabel.font = .boldSystemFont(ofSize: 40)
-        timerLabel.textColor = .purple
+
         view.addSubview(timerLabel)
+        view.addSubview(startStopButton)
     }
     
     // MARK: - Setup layout
     
     private func setupLayout() {
         circularProgressRect.center = view.center
-
+        
+        timerLabel.center.x = circularProgressRect.center.x
+        timerLabel.center.y = circularProgressRect.center.y - 50
+        
+        startStopButton.center.x = circularProgressRect.center.x
+        startStopButton.center.y = circularProgressRect.center.y + 80
     }
    
     // MARK: - Actions
@@ -135,40 +151,33 @@ class BaseViewController: UIViewController {
             isStarted = false
             timer.invalidate()
         } else {
-            callTimer(5)
+            callTimer()
         }
-       
+        startStopButton.setImage(controlImage, for: .normal)
     }
     
-    func callTimer(_ seconds: CGFloat) {
+    private func callTimer() {
         isStarted = true
         timer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true, block: { [unowned self] _ in
             progress += 0.05
-            self.circularProgressRect.transform = CGAffineTransform(rotationAngle: self.angle / 2)
-            self.timerLabel.text = "\(round(progress * 10) / 10)"
-            
+            let currentTime = round(progress * 10) / 10
+            if currentTime == 5 * multiplier {
+                progress = 0
+                isWorkingTime.toggle()
+                updateUI()
+            }
+            self.timerLabel.text = visibleProgress
+            self.circularProgressRect.transform = CGAffineTransform(rotationAngle: self.angle / 2.5)
         })
     }
     
-    func getRandomColor() -> UIColor {
-         //Generate between 0 to 1
-         let red:CGFloat = CGFloat(drand48())
-         let green:CGFloat = CGFloat(drand48())
-         let blue:CGFloat = CGFloat(drand48())
-
-         return UIColor(red:red, green: green, blue: blue, alpha: 1.0)
+    private func updateUI() {
+        bigDotLayer.strokeColor = accentCGColor
+        smallDotLayer.strokeColor = view.backgroundColor?.cgColor
+        circleLayer.strokeColor = accentCGColor
+        timerLabel.textColor = accentUIColor
+        
+        startStopButton.setImage(controlImage, for: .normal)
     }
-
 }
-    
-    /*
-    func rotate(_ to: CGFloat) {
-        UIView.animateKeyframes(withDuration: timeInterval, delay: 0) {
-            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: timeInterval) {
-                self.circularProgressRect.transform = CGAffineTransform(rotationAngle: self.angle)
-            }
-        }
-    }
-    */
-
 
