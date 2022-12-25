@@ -91,7 +91,7 @@ class BaseViewController: UIViewController {
     // MARK: - Setup view
     
     private func setupView() {
-        view.backgroundColor = .white
+        view.backgroundColor = .black
     }
     
     private func createCircularProressBar(onView rect: UIView) {
