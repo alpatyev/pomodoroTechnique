@@ -41,6 +41,10 @@ class BaseViewController: UIViewController {
         
     // MARK: - UI
     
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return .lightContent
+    }
+    
     private var timerLabel: UILabel = {
         let label = UILabel(frame: CGRect(x: 0, y: 0,
                                           width: 220,
