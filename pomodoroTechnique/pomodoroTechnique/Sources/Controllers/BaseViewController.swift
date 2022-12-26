@@ -14,7 +14,7 @@ class BaseViewController: UIViewController {
     private var progress: CGFloat = 0
     private var visibleProgress: String {
         let sec = Int(5 * multiplier - progress)
-        let msec = 100 - Int(progress.truncatingRemainder(dividingBy: 1) * 100)
+        let msec = Int(99 - progress.truncatingRemainder(dividingBy: 1) * 100)
         return String(format: "%02i:%02i", sec, msec)
     }
     
@@ -67,9 +67,18 @@ class BaseViewController: UIViewController {
     }()
     
     private var controlImage: UIImage? {
-        let image = UIImage(named: isStarted ? "pause": "play")
-        return image?.withTintColor(accentUIColor)
-        
+        if let image = UIImage(named: isStarted ? "pause": "play")?.withRenderingMode(.alwaysTemplate) {
+            UIGraphicsBeginImageContextWithOptions(image.size, false, image.scale)
+            accentUIColor.set()
+            image.draw(in: CGRect(origin: .zero, size: image.size))
+            guard let imageColored = UIGraphicsGetImageFromCurrentImageContext() else {
+                return nil
+            }
+            UIGraphicsEndImageContext()
+            return imageColored
+        } else {
+            return nil
+        }
     }
     
     private var circleLayer = CAShapeLayer()
