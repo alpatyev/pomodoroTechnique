@@ -15,7 +15,7 @@ class BaseViewController: UIViewController {
     private var visibleProgress: String {
         let sec = Int(5 * multiplier - progress)
         let msec = Int(100 - progress.truncatingRemainder(dividingBy: 1) * 100)
-        return String(format: "%02i:%02i", sec, msec == 100 ? 00: msec)
+        return String(format: "%02i:%02i", sec, msec == 100 ? 00 : msec)
     }
     
     private var timer = Timer()
