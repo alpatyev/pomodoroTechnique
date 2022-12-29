@@ -71,7 +71,7 @@ class BaseViewController: UIViewController {
     }()
     
     private var controlImage: UIImage? {
-        if let image = UIImage(named: isStarted ? "pause": "play")?.withRenderingMode(.alwaysTemplate) {
+        if let image = UIImage(named: isStarted ? "pause" : "play")?.withRenderingMode(.alwaysTemplate) {
             UIGraphicsBeginImageContextWithOptions(image.size, false, image.scale)
             accentUIColor.set()
             image.draw(in: CGRect(origin: .zero, size: image.size))
