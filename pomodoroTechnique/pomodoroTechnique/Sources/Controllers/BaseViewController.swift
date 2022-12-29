@@ -23,7 +23,7 @@ class BaseViewController: UIViewController {
     private var isWorkingTime: Bool = true
     
     private var multiplier: CGFloat {
-        isWorkingTime ? 5: 1
+        isWorkingTime ? 5 : 1
     }
     private var angle: CGFloat {
         CGFloat.pi * progress / multiplier
