@@ -7,7 +7,13 @@
 
 import UIKit
 
-class BaseViewController: UIViewController {
+// MARK: - View protocol
+
+protocol BaseViewProtocol {}
+
+// MARK: - View class
+
+class BaseViewController: UIViewController, BaseViewProtocol {
     
     // MARK: - Helpers
 

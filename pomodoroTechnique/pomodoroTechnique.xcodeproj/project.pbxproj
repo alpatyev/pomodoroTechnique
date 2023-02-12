@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		644731922999645500E6E16E /* BasePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 644731912999645400E6E16E /* BasePresenter.swift */; };
+		644731942999646600E6E16E /* BaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 644731932999646600E6E16E /* BaseModel.swift */; };
 		64CAFBDB2957099B0007FE64 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64CAFBDA2957099B0007FE64 /* AppDelegate.swift */; };
 		64CAFBDD2957099B0007FE64 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64CAFBDC2957099B0007FE64 /* SceneDelegate.swift */; };
 		64CAFBDF2957099B0007FE64 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64CAFBDE2957099B0007FE64 /* BaseViewController.swift */; };
@@ -15,6 +17,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		644731912999645400E6E16E /* BasePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePresenter.swift; sourceTree = "<group>"; };
+		644731932999646600E6E16E /* BaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseModel.swift; sourceTree = "<group>"; };
 		64CAFBD72957099B0007FE64 /* pomodoroTechnique.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = pomodoroTechnique.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		64CAFBDA2957099B0007FE64 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		64CAFBDC2957099B0007FE64 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -35,6 +39,40 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6447318D2999639100E6E16E /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				6447318E299963A300E6E16E /* Base */,
+			);
+			path = Scenes;
+			sourceTree = "<group>";
+		};
+		6447318E299963A300E6E16E /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				6447318F299963C600E6E16E /* Model */,
+				64473190299963CD00E6E16E /* Presenter */,
+				64CAFBF129570C150007FE64 /* View */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		6447318F299963C600E6E16E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				644731932999646600E6E16E /* BaseModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		64473190299963CD00E6E16E /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				644731912999645400E6E16E /* BasePresenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
 		64CAFBCE2957099A0007FE64 = {
 			isa = PBXGroup;
 			children = (
@@ -64,7 +102,7 @@
 			isa = PBXGroup;
 			children = (
 				64CAFBF229570C1F0007FE64 /* App */,
-				64CAFBF129570C150007FE64 /* Controllers */,
+				6447318D2999639100E6E16E /* Scenes */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -79,12 +117,12 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		64CAFBF129570C150007FE64 /* Controllers */ = {
+		64CAFBF129570C150007FE64 /* View */ = {
 			isa = PBXGroup;
 			children = (
 				64CAFBDE2957099B0007FE64 /* BaseViewController.swift */,
 			);
-			path = Controllers;
+			path = View;
 			sourceTree = "<group>";
 		};
 		64CAFBF229570C1F0007FE64 /* App */ = {
@@ -167,8 +205,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				64CAFBDF2957099B0007FE64 /* BaseViewController.swift in Sources */,
+				644731922999645500E6E16E /* BasePresenter.swift in Sources */,
 				64CAFBDB2957099B0007FE64 /* AppDelegate.swift in Sources */,
 				64CAFBDD2957099B0007FE64 /* SceneDelegate.swift in Sources */,
+				644731942999646600E6E16E /* BaseModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
