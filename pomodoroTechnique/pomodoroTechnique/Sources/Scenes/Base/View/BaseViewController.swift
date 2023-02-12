@@ -53,9 +53,9 @@ final class BaseViewController: UIViewController, BaseViewProtocol {
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Pomodoro timer"
-        label.font = .italicSystemFont(ofSize: 18)
-        label.textColor = .red
+        label.text = "~ Pomodoro timer ~"
+        label.font = .italicSystemFont(ofSize: 21)
+        label.textColor = .gray
         label.textAlignment = .center
         return label
     }()
@@ -165,7 +165,7 @@ final class BaseViewController: UIViewController, BaseViewProtocol {
     
     private func setupLayout() {
         titleLabel.frame = CGRect(x: .zero,
-                                  y: view.center.y - 180,
+                                  y: view.center.y - 300,
                                   width: 220,
                                   height: 80)
         titleLabel.center.x = view.center.x
