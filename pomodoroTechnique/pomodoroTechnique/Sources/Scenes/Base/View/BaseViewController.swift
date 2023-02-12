@@ -13,7 +13,7 @@ protocol BaseViewProtocol {}
 
 // MARK: - View class
 
-class BaseViewController: UIViewController, BaseViewProtocol {
+final class BaseViewController: UIViewController, BaseViewProtocol {
     
     // MARK: - Helpers
 
@@ -51,7 +51,16 @@ class BaseViewController: UIViewController, BaseViewProtocol {
         return .lightContent
     }
     
-    private var timerLabel: UILabel = {
+    private lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Pomodoro timer"
+        label.font = .italicSystemFont(ofSize: 18)
+        label.textColor = .red
+        label.textAlignment = .center
+        return label
+    }()
+    
+    private lazy var timerLabel: UILabel = {
         let label = UILabel(frame: CGRect(x: 0, y: 0,
                                           width: 220,
                                           height: 80))
@@ -62,7 +71,7 @@ class BaseViewController: UIViewController, BaseViewProtocol {
         return label
     }()
     
-    private var startStopButton: UIButton = {
+    private lazy var startStopButton: UIButton = {
         let button = UIButton(frame: CGRect(x: 0, y: 0,
                                             width: 160,
                                             height: 160))
@@ -70,7 +79,7 @@ class BaseViewController: UIViewController, BaseViewProtocol {
         return button
     }()
     
-    private var circularProgressRect: UIView = {
+    private lazy var circularProgressRect: UIView = {
         UIView(frame: CGRect(x: 0, y: 0,
                              width: 320,
                              height: 320))
@@ -91,11 +100,11 @@ class BaseViewController: UIViewController, BaseViewProtocol {
         }
     }
     
-    private var circleLayer = CAShapeLayer()
-    private var smallDotLayer = CAShapeLayer()
-    private var bigDotLayer = CAShapeLayer()
-    private var circularPath = UIBezierPath()
-    private var dotPath = UIBezierPath()
+    private lazy var circleLayer = CAShapeLayer()
+    private lazy var smallDotLayer = CAShapeLayer()
+    private lazy var bigDotLayer = CAShapeLayer()
+    private lazy var circularPath = UIBezierPath()
+    private lazy var dotPath = UIBezierPath()
     
     // MARK: - Lifecycle
     
@@ -144,6 +153,7 @@ class BaseViewController: UIViewController, BaseViewProtocol {
     // MARK: - Setup hierarchy
     
     private func setupHierarchy() {
+        view.addSubview(titleLabel)
         view.addSubview(circularProgressRect)
         createCircularProressBar(onView: circularProgressRect)
 
@@ -154,6 +164,12 @@ class BaseViewController: UIViewController, BaseViewProtocol {
     // MARK: - Setup layout
     
     private func setupLayout() {
+        titleLabel.frame = CGRect(x: .zero,
+                                  y: view.center.y - 180,
+                                  width: 220,
+                                  height: 80)
+        titleLabel.center.x = view.center.x
+        
         circularProgressRect.center = view.center
         
         timerLabel.center.x = circularProgressRect.center.x
@@ -165,7 +181,7 @@ class BaseViewController: UIViewController, BaseViewProtocol {
    
     // MARK: - Actions
     
-    @objc func tapped() {
+    @objc private func tapped() {
         if isStarted {
             isStarted = false
             timer.invalidate()
@@ -199,4 +215,3 @@ class BaseViewController: UIViewController, BaseViewProtocol {
         startStopButton.setImage(controlImage, for: .normal)
     }
 }
-
